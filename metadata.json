@@ -1,0 +1,5 @@
+{
+  "name": "Book Source Extractor",
+  "description": "A utility to scrape, parse, and organize book source JSON links from yckceo.sbs with AI analysis capabilities.",
+  "requestFramePermissions": []
+}
