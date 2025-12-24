@@ -20,6 +20,9 @@ const App: React.FC = () => {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
+  // Safely check for API key existence
+  const hasApiKey = typeof process !== 'undefined' && process.env && process.env.API_KEY;
+
   const handleFetch = useCallback(async (page: number) => {
     setStatus(ScrapeStatus.LOADING);
     setError(null);
@@ -114,7 +117,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              {process.env.API_KEY && sources.length > 0 && (
+              {hasApiKey && sources.length > 0 && (
                  <button
                  onClick={handleAnalyze}
                  disabled={isAnalyzing}

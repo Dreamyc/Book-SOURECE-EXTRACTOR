@@ -4,7 +4,20 @@ import { AnalysisResult } from '../types';
 // Initialize Gemini Client
 // Note: In a real environment, ensure process.env.API_KEY is set.
 // If not set, this service handles the error gracefully.
-const apiKey = process.env.API_KEY || '';
+
+// Safely retrieve API key, handling environments where process might not be defined
+const getApiKey = () => {
+  try {
+    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      return process.env.API_KEY;
+    }
+  } catch (e) {
+    // Ignore error if process is not accessible
+  }
+  return '';
+};
+
+const apiKey = getApiKey();
 let ai: GoogleGenAI | null = null;
 
 if (apiKey) {
