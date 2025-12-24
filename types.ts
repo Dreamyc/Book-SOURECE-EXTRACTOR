@@ -3,6 +3,7 @@ export interface BookSource {
   title: string;
   originalUrl: string;
   jsonUrl: string;
+  updateDate?: string;
 }
 
 export interface ScrapeResult {

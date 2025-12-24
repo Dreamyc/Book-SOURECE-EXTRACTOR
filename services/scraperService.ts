@@ -96,6 +96,13 @@ export const parseHtmlContent = (html: string): ScrapeResult => {
 
     // Regex to match content/id/xxxxx.html
     const idRegex = /content\/id\/(\d+)\.html/;
+    
+    // Regex 1: YYYY-MM-DD
+    const dateRegex1 = /(\d{4}-\d{2}-\d{2})/;
+    // Regex 2: MM/DD HH:mm (e.g., 11/24 13:02)
+    const dateRegex2 = /(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{1,2})/;
+    // Regex 3: Relative time (e.g., 5天前, 18小时前, 30分钟前)
+    const dateRegex3 = /(\d+\s*(?:天|小时|分钟|秒)前)/;
 
     links.forEach(link => {
       const href = link.getAttribute('href');
@@ -120,12 +127,42 @@ export const parseHtmlContent = (html: string): ScrapeResult => {
             }
         }
 
+        // Try to find a date
+        let updateDate: string | undefined;
+        
+        // Check 1: Immediate parent (e.g., <li>Title <span>Date</span></li>)
+        let contextText = link.parentElement?.textContent || "";
+        // Clean up excessive whitespace for regex matching
+        contextText = contextText.replace(/\s+/g, ' '); 
+        
+        let dateMatch = contextText.match(dateRegex1) || 
+                        contextText.match(dateRegex2) || 
+                        contextText.match(dateRegex3);
+
+        // Check 2: Grandparent if not found in parent
+        if (!dateMatch && link.parentElement?.parentElement) {
+             let grandParentText = link.parentElement.parentElement.textContent || "";
+             grandParentText = grandParentText.replace(/\s+/g, ' ');
+             
+             // Safety check: ensure we aren't scanning the entire body
+             if (grandParentText.length < 1000) {
+                 dateMatch = grandParentText.match(dateRegex1) || 
+                             grandParentText.match(dateRegex2) || 
+                             grandParentText.match(dateRegex3);
+             }
+        }
+        
+        if (dateMatch) {
+            updateDate = dateMatch[1];
+        }
+
         if (!uniqueSources.has(id)) {
           uniqueSources.set(id, {
             id,
             title,
             originalUrl,
-            jsonUrl
+            jsonUrl,
+            updateDate
           });
         }
       }

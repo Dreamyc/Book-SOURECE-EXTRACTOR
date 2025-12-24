@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BookSource } from '../types';
-import { Copy, Check, ExternalLink, FileJson } from 'lucide-react';
+import { Copy, Check, ExternalLink, FileJson, Calendar } from 'lucide-react';
 
 interface SourceCardProps {
   source: BookSource;
@@ -18,13 +18,23 @@ export const SourceCard: React.FC<SourceCardProps> = ({ source }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md transition-shadow duration-200 flex flex-col justify-between h-full">
       <div>
-        <div className="flex flex-col gap-1 sm:gap-0 sm:flex-row sm:items-start sm:justify-between mb-2">
-          <h3 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 leading-tight" title={source.title}>
-            {source.title}
-          </h3>
-          <span className="text-[10px] sm:text-xs font-mono bg-gray-100 text-gray-500 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded self-start sm:self-auto shrink-0 whitespace-nowrap">
-            ID: {source.id}
-          </span>
+        <div className="flex flex-row items-start justify-between mb-2 gap-2">
+            <div className="flex flex-col min-w-0">
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 leading-tight break-words" title={source.title}>
+                    {source.title}
+                </h3>
+                {source.updateDate && (
+                    <div className="flex items-center gap-1 mt-1 text-gray-400">
+                        <Calendar size={10} className="shrink-0" />
+                        <span className="text-[10px] sm:text-xs leading-none">
+                            {source.updateDate}
+                        </span>
+                    </div>
+                )}
+            </div>
+            <span className="text-[10px] sm:text-xs font-mono bg-gray-100 text-gray-500 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded shrink-0 whitespace-nowrap">
+                ID: {source.id}
+            </span>
         </div>
         
         <div className="mb-3">
