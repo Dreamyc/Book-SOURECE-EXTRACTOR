@@ -104,63 +104,65 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-600 text-white p-2 rounded-lg">
-                <Download size={24} />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4">
+            {/* Title Section */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-blue-600 text-white p-1.5 sm:p-2 rounded-lg">
+                <Download className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Book Source Extractor</h1>
-                <p className="text-xs text-gray-500">Auto-generate JSON links from yckceo.sbs</p>
+                <h1 className="text-base sm:text-xl font-bold text-gray-900 leading-tight">Book Source Extractor</h1>
+                <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">Auto-generate JSON links from yckceo.sbs</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* Actions Section */}
+            <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
               {hasApiKey && sources.length > 0 && (
                  <button
                  onClick={handleAnalyze}
                  disabled={isAnalyzing}
-                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 disabled:opacity-50 transition-colors"
+                 className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 disabled:opacity-50 transition-colors whitespace-nowrap"
                  title="Use Gemini to analyze titles"
                >
-                 <BrainCircuit size={18} />
-                 {isAnalyzing ? 'Analyzing...' : 'AI Analyze'}
+                 <BrainCircuit className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                 <span>{isAnalyzing ? '...' : 'Analyze'}</span>
                </button>
               )}
              
               <button
                 onClick={() => handleFetch(currentPage)}
                 disabled={status === ScrapeStatus.LOADING}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 transition-colors whitespace-nowrap"
               >
-                <RefreshCw size={18} className={status === ScrapeStatus.LOADING ? 'animate-spin' : ''} />
-                Refresh Page
+                <RefreshCw className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${status === ScrapeStatus.LOADING ? 'animate-spin' : ''}`} />
+                <span>Refresh<span className="hidden sm:inline"> Page</span></span>
               </button>
               
               <button
                 onClick={handleCopyAll}
                 disabled={filteredSources.length === 0}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
+                className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm whitespace-nowrap"
               >
-                {copiedAll ? <Check size={18} /> : <Copy size={18} />}
-                {copiedAll ? 'Copied!' : 'Copy All JSONs'}
+                {copiedAll ? <Check className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Copy className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
+                <span>{copiedAll ? 'Copied!' : 'Copy All'}</span>
               </button>
             </div>
           </div>
 
           {/* Search Bar - only show if we have data */}
           {sources.length > 0 && (
-            <div className="mt-4 relative">
+            <div className="mt-2 sm:mt-4 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={18} className="text-gray-400" />
+                <Search className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-gray-400" />
                 </div>
                 <input
                 type="text"
                 placeholder="Filter by title or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm"
+                className="block w-full pl-9 sm:pl-10 pr-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
             </div>
           )}
@@ -258,7 +260,7 @@ const App: React.FC = () => {
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
                     disabled={status === ScrapeStatus.LOADING}
-                    className={`min-w-[40px] px-3 py-2 text-sm font-medium rounded-lg transition-colors border ${
+                    className={`min-w-[36px] px-2 py-2 text-sm font-medium rounded-lg transition-colors border ${
                         currentPage === pageNum
                         ? 'bg-blue-600 text-white border-blue-600'
                         : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
