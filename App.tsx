@@ -165,7 +165,7 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+      <main className="flex-1 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-6 w-full">
         
         {/* Status Messages */}
         {status === ScrapeStatus.ERROR && (
@@ -201,12 +201,14 @@ const App: React.FC = () => {
 
         {/* Loading Skeleton */}
         {status === ScrapeStatus.LOADING && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg p-4 h-32 animate-pulse border border-gray-200">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2 mb-8"></div>
-                <div className="h-8 bg-gray-100 rounded w-full"></div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg p-3 sm:p-4 h-32 animate-pulse border border-gray-200 flex flex-col justify-between">
+                <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                </div>
+                <div className="h-8 bg-gray-100 rounded w-full mt-4"></div>
               </div>
             ))}
           </div>
@@ -215,7 +217,7 @@ const App: React.FC = () => {
         {/* Results */}
         {status === ScrapeStatus.SUCCESS && (
           <>
-            <div className="mb-4 text-sm text-gray-500 flex justify-between items-center">
+            <div className="mb-4 text-sm text-gray-500 flex justify-between items-center px-1">
               <span>Found {filteredSources.length} sources on Page {currentPage}</span>
               {filteredSources.length !== sources.length && (
                  <span>(Filtered from {sources.length})</span>
@@ -223,7 +225,7 @@ const App: React.FC = () => {
             </div>
 
             {filteredSources.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {filteredSources.map((source) => (
                   <SourceCard key={source.id} source={source} />
                 ))}
